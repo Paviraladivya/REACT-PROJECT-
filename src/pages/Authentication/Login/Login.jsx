@@ -9,6 +9,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, Google
 import { useNavigate } from 'react-router-dom';
 
 const initialState = { email: "", password: "" }
+const GUEST_CREDENTIALS = { email: "guest@example.com", password: "guest123" };
 
 function Login() {
   const [state, setState] = useState(initialState)
@@ -92,6 +93,15 @@ function Login() {
         setIsLoading(false);
       })
   }
+
+  const handleGuestLogin = () => {
+    setIsLoading(true);
+    // Directly navigate to dashboard without authentication
+    setIsAuthenticated(true);  // Set the user as authenticated (as if they logged in)
+    navigate("/dashboard");  // Directly go to the dashboard
+    toast.success("Guest login successful!");
+    setIsLoading(false);
+  };
 
   const handleGoogleAuthentication = (e) => {
     // const auth = getAuth(); 
@@ -276,6 +286,14 @@ function Login() {
                   </div>
                   {/* <button type="submit" className="btn btn-danger text-center">Login</button> */}
                 </form>
+                <button
+                  className="btn btn-secondary mt-2"
+                  onClick={handleGuestLogin}
+                  disabled={isLoading}
+                >
+                  Guest Login
+                </button>
+
                 <div style={{ position: "relative" }}><span className='OR text-center'><i class="fa-solid fa-o"></i><i class="fa-solid fa-r"></i></span><hr /></div>
                 <div className="text-center">
                   <i class="btn fa-brands fa-google fw-5 " onClick={handleGoogleAuthentication}></i>
